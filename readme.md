@@ -14,3 +14,9 @@
 - Optimize with oxi png
 - insert in json
 - optimize json with ujson
+
+## Usage
+
+`python3 compressor.py`
+
+When prompted provide path to folder or file
