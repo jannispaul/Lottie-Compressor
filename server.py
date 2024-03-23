@@ -19,26 +19,9 @@ def index():
 
 @app.route('/result', methods=['POST'])
 def result():
-    # uploaded_files = request.files.getlist("files")
-    # quality = request.form.get("quality")
-    # print(quality)  # Print quality to console
-
-    # compression_info = []
-    # for file in uploaded_files:
-    #     if file.filename.endswith('.json'):
-    #         # file_path = f"/tmp/{file.filename}" 
-    #         file_path = os.path.join('static', file.filename)  # Save file in static folder # Save file temporarily
-    #         file.save(file_path)
-    #         compression_info_list = process_json_file(file_path, quality)
-    #         download_path = compression_info_list[0]  
-    #         compression_info = compression_info_list[1] 
-    #         os.remove(file_path)  # Remove temporary file after processing
-    # print(compression_info_list[1])  # Add this line to check compression_info content
-    # return render_template('result.html', compression_info=compression_info, download_path = download_path, file_name = file.filename)
     if 'user_folder' not in session:
         session['user_folder'] = str(uuid.uuid4())  # Create a unique folder for this session
 
-    # user_folder = os.path.join(app.config['UPLOAD_FOLDER'], session['user_folder'])
     user_folder = os.path.join(app.config['UPLOAD_FOLDER'], session['user_folder'])
     os.makedirs(user_folder, exist_ok=True)  # Create the folder if it doesn't exist
     g.user_folder = user_folder  # Store user_folder in g
@@ -47,7 +30,7 @@ def result():
     quality = request.form.get("quality")
     print(quality)  # Print quality to console
 
-    compression_info = []
+    all_compression_info = []
     for file in uploaded_files:
         if file.filename.endswith('.json'):
             file_path = os.path.join(user_folder, file.filename)  # Save file in user's unique folder
@@ -60,11 +43,17 @@ def result():
             lottie_details = compression_info[-1]
             # Remove lottie details and only keep images
             compression_info.pop()
- 
-            # compression_info = compression_info[] 
-            #os.remove(file_path)  # Remove temporary file after processing
-    return render_template('result.html', image_details=compression_info, download_path = download_path, file_name = file.filename, session_path = session['user_folder'], lottie_details=lottie_details)
 
+            all_compression_info.append({
+                'image_details': compression_info,
+                'download_path': download_path,
+                'file_name': file.filename,
+                'session_path': session['user_folder'],
+                'lottie_details': lottie_details
+            })
+ 
+            #os.remove(file_path)  # Remove temporary file after processing
+    return render_template('result.html', all_compression_info=all_compression_info)
 
 # Serve files in uploads folder
 @app.route('/uploads/<path:filename>')

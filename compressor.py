@@ -51,10 +51,16 @@ def find_and_compress_images(json_file_path, data, quality):
                         compressed_base64 = base64.b64encode(compressed_image_bytes).decode('utf-8')
 
                         current_data[key] = value.replace(image_base64, compressed_base64)
+
+
+
+                        file_name_without_extension = os.path.splitext(os.path.basename(json_file_path))[0]
+                        
+                        image_name = file_name_without_extension + '-' + str(image_index) + '.png'
                         
                         # Save the match as a PNG to the static folder
                         static_folder = os.path.dirname(json_file_path)
-                        image_path = os.path.join(static_folder, f'image_{image_index}.png')
+                        image_path = os.path.join(static_folder, image_name)
                         with open(image_path, 'wb') as f:
                             f.write(image_bytes)
                      
@@ -65,7 +71,7 @@ def find_and_compress_images(json_file_path, data, quality):
                             # 'match': match.group(1),
                             'index': image_index,
                             'image_bytes': base64.b64decode(match.group(1)),
-                            'file_link': f'image_{image_index}.png',
+                            'file_link': image_name,
                             'original_size': len(image_bytes),
                             'compressed_size_after_PNGQUANT': len(pngquant_output),
                             'compressed_size_after_OXIPNG': len(compressed_image_bytes)
@@ -128,7 +134,6 @@ def process_json_file(json_file_path, quality = "75"):
             'new_json_file_path': new_json_file_path
         })
 
-        logging.info("compression info", compression_info) 
         return compression_info
         
     except Exception as e:

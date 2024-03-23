@@ -14,46 +14,47 @@
         gap: var(--space-s);
         overflow: hidden;
         background: var(--white);
+        margin-bottom: var(--space-s);
       }
       .result-header {
         justify-content: space-between;
         align-items: center;
         padding: var(--space-s);
         min-height: 4rem;
-        border-bottom: 1px solid var(--n-color-border);
         cursor: pointer;
-        &:hover{
+        &:hover {
           background: var(--n-color-nav-hover);
         }
       }
       summary::before {
-        content: ' ►';
+        content: " ►";
         display: block;
         transition: 300ms rotate ease-in-out;
       }
       details[open] summary:before {
         rotate: 90deg;
       }
-   
+
       .row {
         display: grid;
-        grid-template-columns: 2rem repeat(4, 1fr) 6rem; 
+        grid-template-columns: 2rem repeat(4, 1fr) 6rem;
         min-height: 2rem;
         padding: var(--space-s);
         align-items: center;
       }
-      .table-head{
+      .image-list {
+        border-top: 1px solid var(--n-color-border);
+      }
+      .table-head {
         font-size: 0.875rem;
         font-weight: 500;
         color: var(--n-color-text-weaker);
-
       }
       .preview {
         width: 3rem;
         height: 3rem;
         object-fit: contain;
       }
-      
     </style>
   </head>
   <body>
@@ -67,16 +68,17 @@
         <div>Savings</div>
         <div></div>
       </div>
+      {% for info in all_compression_info %}
       <details class="result-container" open>
         <summary class="row result-header">
-            <div><b>{{ file_name }}</b></div>
-            <div>{{ lottie_details.original_size }} B</div>
-            <div>{{ lottie_details.compressed_size }} B</div>
-            <div>{{ lottie_details.relative_savings }} %</div>
-            <nord-button href="{{ session_path + download_path }}" variant="primary" download>Download</nord-button>
+          <div><b>{{ info.file_name }}</b></div>
+          <div>{{ info.lottie_details.original_size }} B</div>
+          <div>{{ info.lottie_details.compressed_size }} B</div>
+          <div>{{ info.lottie_details.relative_savings }} %</div>
+          <nord-button href="{{ info.session_path + info.download_path }}" variant="primary" download>Download</nord-button>
         </summary>
         <div class="image-list">
-          {% for image in image_details %}
+          {% for image in info.image_details %}
           <div class="row">
             <div></div>
             <div><img src="{{ image.path }}" class="preview" /></div>
@@ -86,7 +88,8 @@
           </div>
           {% endfor %}
         </div>
-      </div>
+      </details>
+      {% endfor %}
     </div>
   </body>
 </html>
