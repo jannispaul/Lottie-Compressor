@@ -111,23 +111,25 @@ def process_json_file(json_file_path, quality = "75"):
         # After updating the JSON data
         # Create a path to save the new file
         new_json_file_path = os.path.splitext(json_file_path)[0] + "-small.json"
-        # compressed_file_size = os.path.getsize(new_json_file_path)
-        # # Calculate the compressed file size
-        # relative_savings = round((1 - compressed_file_size / file_size) * 100)
-
-        compression_info.append({
-            'file_size': file_size,
-            # 'compressed_file_size': compressed_file_size,
-            # 'relative_savings': relative_savings,
-            'new_json_file_path': new_json_file_path
-        })
-        logging.info("compression info", compression_info) 
         # Save the compressed json file
         with open(new_json_file_path, 'w') as file:
             ujson.dump(data, file, ensure_ascii=False, separators=(',', ':'))
             # logging.info(f"Created compressed JSON file: {new_json_file_path}")
 
-            return compression_info
+
+        compressed_file_size = os.path.getsize(new_json_file_path)
+        # Calculate the compressed file size
+        relative_savings = round((1 - compressed_file_size / file_size) * 100)
+
+        compression_info.append({
+            'original_size': file_size,
+            'compressed_size': compressed_file_size,
+            'relative_savings': relative_savings,
+            'new_json_file_path': new_json_file_path
+        })
+
+        logging.info("compression info", compression_info) 
+        return compression_info
         
     except Exception as e:
         logging.error(f"Error processing JSON file: {e}")

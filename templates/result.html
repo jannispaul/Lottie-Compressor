@@ -10,77 +10,83 @@
         display: flex;
         flex-direction: column;
         border-radius: var(--radius);
-        border: 2px solid var(--gray-30);
+        border: var(--border);
         gap: var(--space-s);
         overflow: hidden;
+        background: var(--white);
       }
       .result-header {
-        display: flex;
         justify-content: space-between;
-        display: flex;
         align-items: center;
         padding: var(--space-s);
-        background: var(--gray-10);
+        min-height: 4rem;
+        border-bottom: 1px solid var(--n-color-border);
+        cursor: pointer;
+        &:hover{
+          background: var(--n-color-nav-hover);
+        }
       }
-      .button {
-        background: var(--primary-color);
-        color: white;
-        border-radius: calc(var(--radius) / 2);
-        text-decoration: none;
-        padding: var(--space-s) var(--space-m);
+      summary::before {
+        content: ' ►';
+        display: block;
+        transition: 300ms rotate ease-in-out;
       }
-      table {
-        border-collapse: unset;
-        border-spacing: unset;
-        caption-side: unset;
-        empty-cells: unset;
-        background-color: unset;
-        border: unset;
+      details[open] summary:before {
+        rotate: 90deg;
+      }
+   
+      .row {
+        display: grid;
+        grid-template-columns: 2rem repeat(4, 1fr) 6rem; 
+        min-height: 2rem;
+        padding: var(--space-s);
+        align-items: center;
+      }
+      .table-head{
         font-size: 0.875rem;
-      }
+        font-weight: 500;
+        color: var(--n-color-text-weaker);
 
-      /* Optionally, you can unset styles for table cells, etc. */
-      table td,
-      table th {
-        padding: 0.25rem 2rem;
-        border: unset;
-        text-align: center;
       }
       .preview {
-        width: 4rem;
-        height: 4rem;
+        width: 3rem;
+        height: 3rem;
         object-fit: contain;
       }
+      
     </style>
   </head>
   <body>
-    <div class="result-container">
-      <div class="result-header">
-        <span>{{ file_name }} {{lottie_details}}</span>
-        <a href="{{ session_path + download_path }}" class="button" download>Download</a>
+    <div>
+      <div class="row table-head">
+        <div></div>
+        <div></div>
+        <div>Original Size</div>
+        <!-- <div>After PNGQUANT</div> -->
+        <div>Size</div>
+        <div>Savings</div>
+        <div></div>
       </div>
-      <table border="1">
-        <thead>
-          <tr>
-            <th>Image</th>
-            <th>Original Size</th>
-            <th>After PNGQUANT</th>
-            <th>After OXIPNG</th>
-            <th>Savings</th>
-          </tr>
-        </thead>
-        <tbody>
+      <details class="result-container" open>
+        <summary class="row result-header">
+            <div><b>{{ file_name }}</b></div>
+            <div>{{ lottie_details.original_size }} B</div>
+            <div>{{ lottie_details.compressed_size }} B</div>
+            <div>{{ lottie_details.relative_savings }} %</div>
+            <nord-button href="{{ session_path + download_path }}" variant="primary" download>Download</nord-button>
+        </summary>
+        <div class="image-list">
           {% for image in image_details %}
-          <tr>
-            <td><img src="{{ image.path }}" class="preview" /></td>
-            <td>{{ image.original_size }} B</td>
-            <td>{{ image.compressed_size_after_PNGQUANT }} B</td>
-            <td>{{ image.compressed_size_after_OXIPNG }} B</td>
-            <td>{{ image.relative_savings }} %</td>
-          </tr>
+          <div class="row">
+            <div></div>
+            <div><img src="{{ image.path }}" class="preview" /></div>
+            <div>{{ image.original_size }} B</div>
+            <div>{{ image.compressed_size_after_OXIPNG }} B</div>
+            <div>{{ image.relative_savings }} %</div>
+          </div>
           {% endfor %}
-        </tbody>
-      </table>
+        </div>
+      </div>
     </div>
   </body>
 </html>

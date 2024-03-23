@@ -9,66 +9,74 @@
         padding: 0;
         margin: 0;
       }
-      body {
-        font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
-      }
+
       :root {
         --radius: 1rem;
-        --primary-color: #3498db; /* Main brand color */
+        --primary-color: color(display-p3 0.276 0.384 0.837); /* #3498db; /* Main brand color */
         --secondary-color: #2ecc71; /* Secondary color */
 
         --success-color: #2ecc71; /* Success color */
-        --success-color-hover: #27ae60;
         --error-color: #e74c3c; /* Error color */
 
+        --gray-5: #fafafa; /* Gray 10 */
         --gray-10: #f5f5f5; /* Gray 10 */
         --gray-20: #eeeeee; /* Gray 20 */
         --gray-30: #ced4da; /* Gray 30 */
 
         --text-color: #333; /* Main text color */
-        --background-color: #fff; /* Background color */
+        --white: #fff; /* Background color */
         --space-s: 1rem;
         --space-m: calc(var(--space-s) * 2);
         --space-l: calc(var(--space-m) * 2);
         --space-xl: calc(var(--space-l) * 2);
         --space-xs: calc(var(--space-s) * 0.5);
+        --border: 1px solid var(--n-color-border);
+      }
+      body {
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+        background: var(--n-color-background);
+        text-align: center;
+        color: var(--n-color-text);
+      }
+      a {
+        color: var(--n-color-text-link);
       }
 
       .form {
         display: flex;
         flex-direction: column;
         border-radius: var(--radius);
-        border: 2px solid var(--gray-30);
+        border: var(--border);
         overflow: hidden;
+        background: var(--white);
+        margin-top: var(--space-m);
       }
 
       .drop-zone {
-        border: 2px dashed var(--gray-30);
+        border: 1px dashed color-mix(in srgb, var(--n-color-accent) 50%, white);
         border-radius: 8px;
-        padding: 20px;
+        padding: var(--space-l);
         text-align: center;
         cursor: pointer;
-        background-color: #ffffff;
-        margin: var(--space-xs);
-      }
-
-      .instructions {
-        font-size: 16px;
-        color: #6c757d;
+        background: color-mix(in srgb, var(--n-color-accent) 5%, white);
+        margin: var(--space-xs) var(--space-xs) 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        min-height: 4rem;
+        transition: 200ms ease background;
+        &:hover {
+          background: color-mix(in srgb, var(--n-color-accent) 10%, white);
+        }
+        .icon {
+          width: 1.5rem;
+          margin-bottom: 1rem;
+        }
       }
 
       .file-input {
         display: none;
-      }
-
-      .file-label {
-        display: block;
-        margin-top: 10px;
-        padding: 10px 20px;
-        background-color: #007bff;
-        color: #ffffff;
-        border-radius: 4px;
-        cursor: pointer;
       }
 
       .file-name {
@@ -79,13 +87,13 @@
         padding: 4rem 2rem;
         display: flex;
         flex-direction: column;
-        gap: var(--space-m);
+        gap: var(--space-s);
       }
       .toggle-switch {
         position: relative;
         display: inline-block;
-        width: 60px;
-        height: 34px;
+        width: 3rem;
+        height: 2rem;
       }
 
       .toggle-switch input {
@@ -101,57 +109,54 @@
         left: 0;
         right: 0;
         bottom: 0;
-        background-color: #ccc;
-        border-radius: 34px;
+        background-color: var(--gray-30);
+        border-radius: 100vmax;
         transition: 0.4s;
       }
 
       .slider:before {
         position: absolute;
         content: "";
-        height: 26px;
-        width: 26px;
-        left: 4px;
-        bottom: 4px;
+        height: 1.5rem;
+        width: 1.5rem;
+        left: 0.25rem;
+        bottom: 0.25rem;
         background-color: white;
-        border-radius: 50%;
+        border-radius: 100vmax;
         transition: 0.4s;
       }
 
       input:checked + .slider {
-        background-color: #2196f3;
+        background-color: var(--primary-color);
       }
 
       input:checked + .slider:before {
-        transform: translateX(26px);
+        transform: translateX(66%);
       }
+
       .toggle-wrap {
         display: flex;
         align-items: center;
-        gap: 0.5rem;
+        gap: 0.75rem;
         border-radius: calc(var(--radius) * 0.5);
-        background: rgba(255, 255, 255, 0.5);
-        padding: var(--space-s) var(--space-m);
+        background: var(--gray-5);
+        padding: var(--space-xs) var(--space-s);
+        min-height: 2.625rem;
+      }
+      .toggle-wrap:hover {
+        background: var(--gray-10);
       }
       .controls {
         display: flex;
         padding: var(--space-s);
-        background: var(--gray-10);
         gap: 0.25rem;
-      }
-      input[type="submit"] {
-        /* all: unset; */
-        background: var(--success-color);
-        padding: 0.75rem 1rem;
-        border-radius: calc(0.5 * var(--radius));
-        border: none;
-        color: black;
-        font-size: 1rem;
-      }
-      input[type="submit"]:hover {
-        background-color: var(--success-color-hover);
+        justify-content: center;
+        align-items: center;
+        flex-wrap: wrap;
       }
     </style>
+    <link rel="stylesheet" href="https://nordcdn.net/ds/css/3.1.1/nord.min.css" integrity="sha384-zz2Vh/uaPtnKKnKq4a8aP/R7ybJEZD3LuwnvmLE+p42C+Zjr2R0Y+PKwdABWc61A" crossorigin="anonymous" />
+    <script type="module" src="https://nordcdn.net/ds/components/3.8.0/index.js" integrity="sha384-zvZDBl7G/h/0UeesdZH1CBfL9kfoMi+5/I28m8u8yCgzJC7kohDH3I6XgaMzYnLW" crossorigin="anonymous"></script>
   </head>
   <body>
     <script>
@@ -173,27 +178,30 @@
     <main>
       <div class="container">
         <h1>Compress embedded PNG in Lottie</h1>
+        <p>This site uses <a href="https://pngquant.org/">PNGQUANT</a> and <a href="https://github.com/shssoichiro/oxipng">OXIPNG</a> to compress base64 encoded PNGs in lottie files.</p>
         <form action="/result" method="post" enctype="multipart/form-data" class="form">
           <!-- <input type="file" id="file" name="files" accept=".json" multiple /> -->
-          <div class="drop-zone" id="dropZone">
-            <div class="instructions">Drag & Drop lottie json files here</div>
-            <input type="file" id="file" name="files" class="file-input" accept=".json" multiple />
-            <label for="file" class="file-label">Or click to select files</label>
+
+          <label for="file" class="drop-zone" id="dropZone">
+            <input type="file" id="file" name="files" class="file-input" accept=".json" multiple required />
+            <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="var(--primary-color)"><path d="M20 5H4V19L13.2923 9.70649C13.6828 9.31595 14.3159 9.31591 14.7065 9.70641L20 15.0104V5ZM2 3.9934C2 3.44476 2.45531 3 2.9918 3H21.0082C21.556 3 22 3.44495 22 3.9934V20.0066C22 20.5552 21.5447 21 21.0082 21H2.9918C2.44405 21 2 20.5551 2 20.0066V3.9934ZM8 11C6.89543 11 6 10.1046 6 9C6 7.89543 6.89543 7 8 7C9.10457 7 10 7.89543 10 9C10 10.1046 9.10457 11 8 11Z"></path></svg>
+            Drag and drop or browse for a lottie json file.
             <div id="fileList" class="file-list"></div>
-          </div>
+          </label>
+
           <div class="controls">
-            <label class="toggle-wrap">
-              Convert to Webp
-              <div class="toggle-switch">
-                <input type="checkbox" />
-                <span class="slider"></span>
-              </div>
-            </label>
-            <label for="quality" class="toggle-wrap">
-              Quality
-              <input type="range" name="quality" value="80" min="0" max="100" />
-            </label>
-            <input type="submit" value="Compress" />
+            <div class="toggle-wrap">
+              <nord-stack>
+                <nord-toggle reverse label="Convert to Webp" name="webp " value="false"></nord-toggle>
+              </nord-stack>
+            </div>
+            <div class="toggle-wrap">
+              <!-- Quality -->
+              <!-- <input type="range" value="80" min="0" max="100" /> -->
+              <nord-range label="Quality" name="quality" value="80" min="1" max="100"></nord-range>
+            </div>
+            <!-- <input value="Compress" class="button" /> -->
+            <nord-button type="submit" variant="primary" size="l">Compress</nord-button>
           </div>
         </form>
         <div id="result">

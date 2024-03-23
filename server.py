@@ -58,12 +58,11 @@ def result():
             # Extract variables to pass to user
             download_path = compression_info[-1]['new_json_file_path']  
             lottie_details = compression_info[-1]
-            print(compression_info)
+            # Remove lottie details and only keep images
             compression_info.pop()
  
             # compression_info = compression_info[] 
             #os.remove(file_path)  # Remove temporary file after processing
-    # print(compression_info_list[1])  # Add this line to check compression_info content
     return render_template('result.html', image_details=compression_info, download_path = download_path, file_name = file.filename, session_path = session['user_folder'], lottie_details=lottie_details)
 
 
@@ -74,25 +73,3 @@ def uploaded_files(filename):
 
 if __name__ == '__main__':
     app.run(debug=True)
-# @app.route('/')
-# def index():
-#     return render_template('index.html')
-
-# @app.route('/result', methods=['POST'])
-# def result():
-#     uploaded_files = request.files.getlist("files")
-#     compression_info = []
-
-#     for file in uploaded_files:
-#         if file.filename.endswith('.json'):
-#             file_path = f"/tmp/{file.filename}"  # Save file temporarily
-#             file.save(file_path)
-#             compression_info.extend(process_json_file(file_path))
-#             os.remove(file_path)  # Remove temporary file after processing
-
-#     print(compression_info)  # Add this line to check compression_info content
-#     return render_template('result.html', compression_info=compression_info)
-
-
-# if __name__ == '__main__':
-#     app.run(debug=True)
