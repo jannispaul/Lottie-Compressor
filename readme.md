@@ -23,13 +23,17 @@ When prompted provide path to folder or file
 
 ## Todo
 
-[ ] Handle multiple files
-[ ] Handle upload
-[ ] Listing results
-[ ] Download
-[ ] Use folders for each lottie
-[ ] Create folder
-[ ] Delete folder
-[ ] Show quality number
-[ ] Add Webp conversion
-[ ] Add .lottie conversion
+- [ ] Convert Button
+  - [ ] Disabled on default
+  - [ ] Add loading state
+- [ ] Handle multiple files
+  - [ ] Listing results
+  - [ ] Handle upload
+  - [ ] Download all
+- [ ] Download
+- [x] Use folders for each lottie
+- [x] Create folder
+- [ ] Delete folder
+- [x] Show quality number
+- [ ] Add Webp conversion
+- [ ] Add .lottie conversion
