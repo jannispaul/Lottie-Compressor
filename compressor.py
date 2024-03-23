@@ -116,7 +116,7 @@ def process_json_file(json_file_path, quality = "75"):
         
         # After updating the JSON data
         # Create a path to save the new file
-        new_json_file_path = os.path.splitext(json_file_path)[0] + "-small.json"
+        new_json_file_path = os.path.splitext(json_file_path)[0] + "-min.json"
         # Save the compressed json file
         with open(new_json_file_path, 'w') as file:
             ujson.dump(data, file, ensure_ascii=False, separators=(',', ':'))

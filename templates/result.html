@@ -37,7 +37,7 @@
 
       .row {
         display: grid;
-        grid-template-columns: 2rem repeat(4, 1fr) 6rem;
+        grid-template-columns: 2rem 2fr repeat(3, 1fr) 6rem;
         min-height: 2rem;
         padding: var(--space-s);
         align-items: center;
@@ -54,6 +54,10 @@
         width: 3rem;
         height: 3rem;
         object-fit: contain;
+        object-position: left;
+      }
+      .file-name {
+        text-align: left;
       }
     </style>
   </head>
@@ -71,7 +75,7 @@
       {% for info in all_compression_info %}
       <details class="result-container" open>
         <summary class="row result-header">
-          <div><b>{{ info.file_name }}</b></div>
+          <div class="file-name"><b>{{ info.file_name }}</b></div>
           <div>{{ info.lottie_details.original_size }} B</div>
           <div>{{ info.lottie_details.compressed_size }} B</div>
           <div>{{ info.lottie_details.relative_savings }} %</div>
@@ -81,7 +85,7 @@
           {% for image in info.image_details %}
           <div class="row">
             <div></div>
-            <div><img src="{{ image.path }}" class="preview" /></div>
+            <img src="{{ image.path }}" class="preview" />
             <div>{{ image.original_size }} B</div>
             <div>{{ image.compressed_size_after_OXIPNG }} B</div>
             <div>{{ image.relative_savings }} %</div>
