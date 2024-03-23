@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Compression Result</title>
+    <style>
+      .result-container {
+        border-radius: var(--radius);
+        display: flex;
+        flex-direction: column;
+        border-radius: var(--radius);
+        border: 2px solid var(--gray-30);
+        gap: var(--space-s);
+        overflow: hidden;
+      }
+      .result-header {
+        display: flex;
+        justify-content: space-between;
+        display: flex;
+        align-items: center;
+        padding: var(--space-s);
+        background: var(--gray-10);
+      }
+      .button {
+        background: var(--primary-color);
+        color: white;
+        border-radius: calc(var(--radius) / 2);
+        text-decoration: none;
+        padding: var(--space-s) var(--space-m);
+      }
+      table {
+        border-collapse: unset;
+        border-spacing: unset;
+        caption-side: unset;
+        empty-cells: unset;
+        background-color: unset;
+        border: unset;
+        font-size: 0.875rem;
+      }
+
+      /* Optionally, you can unset styles for table cells, etc. */
+      table td,
+      table th {
+        padding: 0.25rem 2rem;
+        border: unset;
+        text-align: center;
+      }
+      .preview {
+        width: 4rem;
+        height: 4rem;
+        object-fit: contain;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="result-container">
+      <div class="result-header">
+        <span>{{ file_name }} {{lottie_details}}</span>
+        <a href="{{ session_path + download_path }}" class="button" download>Download</a>
+      </div>
+      <table border="1">
+        <thead>
+          <tr>
+            <th>Image</th>
+            <th>Original Size</th>
+            <th>After PNGQUANT</th>
+            <th>After OXIPNG</th>
+            <th>Savings</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for image in image_details %}
+          <tr>
+            <td><img src="{{ image.path }}" class="preview" /></td>
+            <td>{{ image.original_size }} B</td>
+            <td>{{ image.compressed_size_after_PNGQUANT }} B</td>
+            <td>{{ image.compressed_size_after_OXIPNG }} B</td>
+            <td>{{ image.relative_savings }} %</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </body>
+</html>

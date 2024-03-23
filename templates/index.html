@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Upload JSON Files</title>
+    <style>
+      * {
+        padding: 0;
+        margin: 0;
+      }
+      body {
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+      }
+      :root {
+        --radius: 1rem;
+        --primary-color: #3498db; /* Main brand color */
+        --secondary-color: #2ecc71; /* Secondary color */
+
+        --success-color: #2ecc71; /* Success color */
+        --success-color-hover: #27ae60;
+        --error-color: #e74c3c; /* Error color */
+
+        --gray-10: #f5f5f5; /* Gray 10 */
+        --gray-20: #eeeeee; /* Gray 20 */
+        --gray-30: #ced4da; /* Gray 30 */
+
+        --text-color: #333; /* Main text color */
+        --background-color: #fff; /* Background color */
+        --space-s: 1rem;
+        --space-m: calc(var(--space-s) * 2);
+        --space-l: calc(var(--space-m) * 2);
+        --space-xl: calc(var(--space-l) * 2);
+        --space-xs: calc(var(--space-s) * 0.5);
+      }
+
+      .form {
+        display: flex;
+        flex-direction: column;
+        border-radius: var(--radius);
+        border: 2px solid var(--gray-30);
+        overflow: hidden;
+      }
+
+      .drop-zone {
+        border: 2px dashed var(--gray-30);
+        border-radius: 8px;
+        padding: 20px;
+        text-align: center;
+        cursor: pointer;
+        background-color: #ffffff;
+        margin: var(--space-xs);
+      }
+
+      .instructions {
+        font-size: 16px;
+        color: #6c757d;
+      }
+
+      .file-input {
+        display: none;
+      }
+
+      .file-label {
+        display: block;
+        margin-top: 10px;
+        padding: 10px 20px;
+        background-color: #007bff;
+        color: #ffffff;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+
+      .file-name {
+        margin-top: 10px;
+        font-size: 14px;
+      }
+      .container {
+        padding: 4rem 2rem;
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-m);
+      }
+      .toggle-switch {
+        position: relative;
+        display: inline-block;
+        width: 60px;
+        height: 34px;
+      }
+
+      .toggle-switch input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+      }
+
+      .slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #ccc;
+        border-radius: 34px;
+        transition: 0.4s;
+      }
+
+      .slider:before {
+        position: absolute;
+        content: "";
+        height: 26px;
+        width: 26px;
+        left: 4px;
+        bottom: 4px;
+        background-color: white;
+        border-radius: 50%;
+        transition: 0.4s;
+      }
+
+      input:checked + .slider {
+        background-color: #2196f3;
+      }
+
+      input:checked + .slider:before {
+        transform: translateX(26px);
+      }
+      .toggle-wrap {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        border-radius: calc(var(--radius) * 0.5);
+        background: rgba(255, 255, 255, 0.5);
+        padding: var(--space-s) var(--space-m);
+      }
+      .controls {
+        display: flex;
+        padding: var(--space-s);
+        background: var(--gray-10);
+        gap: 0.25rem;
+      }
+      input[type="submit"] {
+        /* all: unset; */
+        background: var(--success-color);
+        padding: 0.75rem 1rem;
+        border-radius: calc(0.5 * var(--radius));
+        border: none;
+        color: black;
+        font-size: 1rem;
+      }
+      input[type="submit"]:hover {
+        background-color: var(--success-color-hover);
+      }
+    </style>
+  </head>
+  <body>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        document.querySelector("form").addEventListener("submit", function (event) {
+          event.preventDefault();
+          var xhr = new XMLHttpRequest();
+          xhr.open("POST", "/result");
+          xhr.onload = function () {
+            if (xhr.status === 200) {
+              document.querySelector("#result").innerHTML = xhr.responseText;
+            }
+          };
+          var formData = new FormData(this);
+          xhr.send(formData);
+        });
+      });
+    </script>
+    <main>
+      <div class="container">
+        <h1>Compress embedded PNG in Lottie</h1>
+        <form action="/result" method="post" enctype="multipart/form-data" class="form">
+          <!-- <input type="file" id="file" name="files" accept=".json" multiple /> -->
+          <div class="drop-zone" id="dropZone">
+            <div class="instructions">Drag & Drop lottie json files here</div>
+            <input type="file" id="file" name="files" class="file-input" accept=".json" multiple />
+            <label for="file" class="file-label">Or click to select files</label>
+            <div id="fileList" class="file-list"></div>
+          </div>
+          <div class="controls">
+            <label class="toggle-wrap">
+              Convert to Webp
+              <div class="toggle-switch">
+                <input type="checkbox" />
+                <span class="slider"></span>
+              </div>
+            </label>
+            <label for="quality" class="toggle-wrap">
+              Quality
+              <input type="range" name="quality" value="80" min="0" max="100" />
+            </label>
+            <input type="submit" value="Compress" />
+          </div>
+        </form>
+        <div id="result">
+          <!-- The server's response will be inserted here -->
+        </div>
+      </div>
+    </main>
+    <script>
+      const dropZone = document.getElementById("dropZone");
+      const fileInput = document.getElementById("file");
+      const fileListDisplay = document.getElementById("fileList");
+
+      dropZone.addEventListener("dragover", (event) => {
+        event.preventDefault();
+        dropZone.classList.add("drag-over");
+      });
+
+      dropZone.addEventListener("dragleave", () => {
+        dropZone.classList.remove("drag-over");
+      });
+
+      dropZone.addEventListener("drop", (event) => {
+        event.preventDefault();
+        dropZone.classList.remove("drag-over");
+        const files = event.dataTransfer.files;
+        displayFileNames(files);
+      });
+
+      fileInput.addEventListener("change", (event) => {
+        const files = event.target.files;
+        displayFileNames(files);
+      });
+
+      function displayFileNames(files) {
+        fileListDisplay.innerHTML = "";
+        if (files.length > 0) {
+          Array.from(files).forEach((file) => {
+            const fileNameItem = document.createElement("div");
+            fileNameItem.textContent = file.name;
+            fileListDisplay.appendChild(fileNameItem);
+          });
+        } else {
+          fileListDisplay.textContent = "No files selected";
+        }
+      }
+    </script>
+  </body>
+</html>
