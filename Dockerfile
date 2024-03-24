@@ -12,8 +12,11 @@ COPY --from=builder /home/linuxbrew/.linuxbrew/bin/pngquant /usr/local/bin/
 COPY --from=builder /home/linuxbrew/.linuxbrew/bin/oxipng /usr/local/bin/
 
 # Check if pngquant and oxipng are correctly copied and are executable
-RUN which pngquant
-RUN which oxipng
+RUN ls -l /usr/local/bin/pngquant
+RUN ls -l /usr/local/bin/oxipng
+
+RUN find / -name pngquant
+RUN chmod +x /usr/local/bin/pngquant
 
 # Print PATH
 RUN echo $PATH
