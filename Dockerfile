@@ -1,7 +1,14 @@
-FROM linuxbrew/brew:3.8
+# Stage 1: Install oxipng and pngquant using Homebrew
+FROM linuxbrew/brew as builder
 
-# Install pngquant and oxipng
 RUN brew install pngquant oxipng
+
+# Stage 2: Setup Python environment
+FROM python:3.8
+
+# Copy binaries from builder stage
+COPY --from=builder /home/linuxbrew/.linuxbrew/bin/pngquant /usr/local/bin/
+COPY --from=builder /home/linuxbrew/.linuxbrew/bin/oxipng /usr/local/bin/
 
 # Install Python dependencies
 COPY requirements.txt .
