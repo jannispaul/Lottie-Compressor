@@ -14,11 +14,13 @@ print(__name__)
 
 @app.route('/')
 def index():
+    print("path", os.environ['PATH'])   
     return render_template('index.html')
 
 
 @app.route('/result', methods=['POST'])
 def result():
+    print("path", os.environ['PATH'])
     if 'user_folder' not in session:
         session['user_folder'] = str(uuid.uuid4())  # Create a unique folder for this session
 
