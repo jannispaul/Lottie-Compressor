@@ -1,6 +1,7 @@
 # Stage 1: Install oxipng and pngquant using Homebrew
 FROM linuxbrew/brew as builder
 
+USER linuxbrew
 RUN brew install pngquant oxipng
 
 # Stage 2: Setup Python environment
