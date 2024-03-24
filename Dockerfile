@@ -1,17 +1,16 @@
 FROM python:3.8
 
-# Install pngquant, build-essential, curl and Rust for compiling oxipng from source
-RUN apt-get update && apt-get install -y pngquant build-essential curl
-RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+# Install dependencies
+RUN apt-get update && apt-get install -y curl git
 
-# Add Rust to PATH
-ENV PATH="/root/.cargo/bin:${PATH}"
+# Install Homebrew
+RUN /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 
-# Download and compile oxipng
-RUN curl -L https://github.com/optipng/oxipng/releases/download/v9.0.0/oxipng-9.0.0.tar.gz | tar xz \
-    && cd oxipng-9.0.0 \
-    && cargo build --release \
-    && cp target/release/oxipng /usr/local/bin/
+# Add Homebrew to PATH
+ENV PATH="/home/linuxbrew/.linuxbrew/bin:${PATH}"
+
+# Install pngquant and oxipng
+RUN brew install pngquant oxipng
 
 # Install Python dependencies
 COPY requirements.txt .
