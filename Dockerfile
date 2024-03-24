@@ -11,7 +11,8 @@ RUN pip install -r requirements.txt
 COPY . .
 
 # Expose the port that your app runs on
-EXPOSE $PORT
+# EXPOSE $PORT
 
 # Start the application using Gunicorn
-CMD ["gunicorn", "-b", "0.0.0.0:$PORT", "app:app"]
+# CMD ["gunicorn", "-b", "0.0.0.0:$PORT", "app:app"]
+CMD gunicorn -b 0.0.0.0:$PORT app:app
