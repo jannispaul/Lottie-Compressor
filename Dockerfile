@@ -11,6 +11,13 @@ FROM python:3.8
 COPY --from=builder /home/linuxbrew/.linuxbrew/bin/pngquant /usr/local/bin/
 COPY --from=builder /home/linuxbrew/.linuxbrew/bin/oxipng /usr/local/bin/
 
+# Check if pngquant and oxipng are correctly copied and are executable
+RUN which pngquant
+RUN which oxipng
+
+# Print PATH
+RUN echo $PATH
+
 # Install Python dependencies
 COPY requirements.txt .
 RUN pip install -r requirements.txt
