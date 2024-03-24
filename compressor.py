@@ -42,10 +42,13 @@ def find_and_compress_images(json_file_path, data, quality):
                             tmp_file.write(image_bytes)
                             tmp_file.close()
 
-                        pngquant_output = subprocess.check_output(['pngquant', '--quality', quality, '--force', '--output', '-', tmp_file.name])
-                        oxipng_output = subprocess.check_output(['oxipng', '--quiet', '--strip', 'all', '--out', tmp_file.name, '-'], input=pngquant_output)
-                        # pngquant_output = subprocess.check_output(['/usr/local/bin/pngquant', '--quality', quality, '--force', '--output', '-', tmp_file.name])
-                        # oxipng_output = subprocess.check_output(['/usr/local/bin/oxipng', '--quiet', '--strip', 'all', '--out', tmp_file.name, '-'], input=pngquant_output)
+                        # pngquant_output = subprocess.check_output(['pngquant', '--quality', quality, '--force', '--output', '-', tmp_file.name])
+                        # oxipng_output = subprocess.check_output(['oxipng', '--quiet', '--strip', 'all', '--out', tmp_file.name, '-'], input=pngquant_output)
+                        try:
+                            pngquant_output = subprocess.check_output(['pngquant', '--quality', quality, '--force', '--output', '-', tmp_file.name])
+                            oxipng_output = subprocess.check_output(['oxipng', '--quiet', '--strip', 'all', '--out', tmp_file.name, '-'], input=pngquant_output)
+                        except FileNotFoundError as e:
+                            print(f"Error: {e}")
 
                         with open(tmp_file.name, 'rb') as f:
                             compressed_image_bytes = f.read() 

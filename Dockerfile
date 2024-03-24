@@ -15,8 +15,8 @@ COPY --from=builder /home/linuxbrew/.linuxbrew/bin/oxipng /usr/local/bin/
 RUN ls -l /usr/local/bin/pngquant
 RUN ls -l /usr/local/bin/oxipng
 
-RUN find / -name pngquant
-RUN chmod +x /usr/local/bin/pngquant
+# RUN find / -name pngquant
+# RUN chmod +x /usr/local/bin/pngquant
 
 # Print PATH
 RUN echo $PATH
@@ -28,8 +28,9 @@ RUN pip install -r requirements.txt
 # Copy your application code
 COPY . .
 
-# Switch to root user
-USER root
+# Add /usr/local/bin to PATH
+ENV PATH="/usr/local/bin:${PATH}"
+
 
 # Start the application using Gunicorn
 CMD gunicorn -b 0.0.0.0:$PORT app:app
