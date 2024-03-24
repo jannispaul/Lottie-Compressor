@@ -10,5 +10,8 @@ RUN pip install -r requirements.txt
 # Copy your application code
 COPY . .
 
+# Set a default port if PORT environment variable is not set
+ENV PORT 8000
+
 # Start the application
 CMD gunicorn -b 0.0.0.0:$PORT app:app
