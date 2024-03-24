@@ -1,7 +1,7 @@
 FROM python:3.8
 
-# Install pngquant
-RUN apt-get update && apt-get install -y pngquant
+# Install pngquant and oxipng
+RUN apt-get update && apt-get install -y pngquant oxipng
 
 # Install Python dependencies
 COPY requirements.txt .
