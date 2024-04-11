@@ -14,13 +14,11 @@ print(__name__)
 
 @app.route('/')
 def index():
-    print("path", os.environ['PATH'])   
     return render_template('index.html')
 
 
 @app.route('/result', methods=['POST'])
 def result():
-    print("path", os.environ['PATH'])
     if 'user_folder' not in session:
         session['user_folder'] = str(uuid.uuid4())  # Create a unique folder for this session
 
@@ -30,29 +28,41 @@ def result():
 
     uploaded_files = request.files.getlist("files")
     quality = request.form.get("quality")
-    print(quality)  # Print quality to console
 
     all_compression_info = []
     for file in uploaded_files:
         if file.filename.endswith('.json'):
             file_path = os.path.join(user_folder, file.filename)  # Save file in user's unique folder
             file.save(file_path)
-            
             # Run main function and get info back
             compression_info = process_json_file(file_path, quality)
-            # Extract variables to pass to user
-            download_path = compression_info[-1]['new_json_file_path']  
-            lottie_details = compression_info[-1]
-            # Remove lottie details and only keep images
-            compression_info.pop()
+            if compression_info is not None:
+                download_path = compression_info[-1]['new_json_file_path']  
+                lottie_details = compression_info[-1]
+                compression_info.pop()
 
-            all_compression_info.append({
-                'image_details': compression_info,
-                'download_path': download_path,
-                'file_name': file.filename,
-                'session_path': session['user_folder'],
-                'lottie_details': lottie_details
-            })
+                all_compression_info.append({
+                    'image_details': compression_info,
+                    'download_path': download_path,
+                    'file_name': file.filename,
+                    'session_path': session['user_folder'],
+                    'lottie_details': lottie_details
+                }) 
+            # # Run main function and get info back
+            # compression_info = process_json_file(file_path, quality)
+            # # Extract variables to pass to user
+            # download_path = compression_info[-1]['new_json_file_path']  
+            # lottie_details = compression_info[-1]
+            # # Remove lottie details and only keep images
+            # compression_info.pop()
+
+            # all_compression_info.append({
+            #     'image_details': compression_info,
+            #     'download_path': download_path,
+            #     'file_name': file.filename,
+            #     'session_path': session['user_folder'],
+            #     'lottie_details': lottie_details
+            # })
  
             #os.remove(file_path)  # Remove temporary file after processing
     return render_template('result.html', all_compression_info=all_compression_info)
