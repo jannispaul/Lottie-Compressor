@@ -36,9 +36,13 @@ def result():
             file.save(file_path)
             # Run main function and get info back
             compression_info = process_json_file(file_path, quality)
+            print(f"compression_info: {compression_info}")  # Debug print
+            # Check if compression_info is not None
             if compression_info is not None:
+                # Extract variables to pass to user
                 download_path = compression_info[-1]['new_json_file_path']  
                 lottie_details = compression_info[-1]
+                # Remove lottie details and only keep images
                 compression_info.pop()
 
                 all_compression_info.append({
@@ -47,7 +51,9 @@ def result():
                     'file_name': file.filename,
                     'session_path': session['user_folder'],
                     'lottie_details': lottie_details
-                }) 
+                })
+            else:
+                print(f"process_json_file returned None for file: {file_path}")  # Debug print
             # # Run main function and get info back
             # compression_info = process_json_file(file_path, quality)
             # # Extract variables to pass to user
