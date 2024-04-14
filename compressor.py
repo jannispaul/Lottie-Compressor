@@ -7,7 +7,8 @@ import subprocess
 import tempfile
 print(os.environ['PATH'])
 
-logging.basicConfig(level=logging.INFO)
+# logging.basicConfig(level=logging.INFO)
+logging.basicConfig(level=logging.DEBUG)
 
 
 def find_and_compress_images(json_file_path, data, quality):
@@ -46,17 +47,19 @@ def find_and_compress_images(json_file_path, data, quality):
                         # oxipng_output = subprocess.check_output(['oxipng', '--quiet', '--strip', 'all', '--out', tmp_file.name, '-'], input=pngquant_output)
                         # pngquant_output = None
                         # oxipng_output = None
-
+                        logging.debug('About to execute pngquant')
                         try:
                             pngquant_output = subprocess.check_output(['pngquant', '--quality', quality, '--force', '--output', '-', tmp_file.name])
                         except FileNotFoundError as e:
                             print(f"Error pngquant: {e}")
 
+                        logging.debug('About to execute oxipng')
                         try:
                             oxipng_output = subprocess.check_output(['oxipng', '--quiet', '--strip', 'all', '--out', tmp_file.name, '-'], input=pngquant_output)
                         except FileNotFoundError as e:
                             print(f"Error oxi: {e}")
 
+                        logging.debug('About to execute read')
                         with open(tmp_file.name, 'rb') as f:
                             compressed_image_bytes = f.read() 
 
@@ -76,7 +79,7 @@ def find_and_compress_images(json_file_path, data, quality):
                         with open(image_path, 'wb') as f:
                             f.write(image_bytes)
                      
-
+                        logging.debug("about to append to images dict")
                         images.append({
                             'path': image_path,
                             # 'key': key,
