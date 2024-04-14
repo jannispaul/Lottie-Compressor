@@ -1,5 +1,7 @@
 # Lottie Compressor
 
+Web app built with flask.
+
 ## Dependencies
 
 - PNGQuant
@@ -17,6 +19,10 @@
 
 ## Usage
 
+To start the developement server
+`flask run`
+
+To run the Pyhton compressor script only
 `python3 compressor.py`
 
 When prompted provide path to folder or file

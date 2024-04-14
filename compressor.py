@@ -49,9 +49,13 @@ def find_and_compress_images(json_file_path, data, quality):
 
                         try:
                             pngquant_output = subprocess.check_output(['pngquant', '--quality', quality, '--force', '--output', '-', tmp_file.name])
+                        except FileNotFoundError as e:
+                            print(f"Error pngquant: {e}")
+
+                        try:
                             oxipng_output = subprocess.check_output(['oxipng', '--quiet', '--strip', 'all', '--out', tmp_file.name, '-'], input=pngquant_output)
                         except FileNotFoundError as e:
-                            print(f"Error: {e}")
+                            print(f"Error oxi: {e}")
 
                         with open(tmp_file.name, 'rb') as f:
                             compressed_image_bytes = f.read() 
